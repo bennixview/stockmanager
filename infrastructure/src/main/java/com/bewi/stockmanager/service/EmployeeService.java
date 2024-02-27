@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.bewi.stockmanager.model.Employee;
-import com.bewi.stockmanager.model.paging.Page;
-import com.bewi.stockmanager.model.paging.Paged;
-import com.bewi.stockmanager.model.paging.Paging;
+import com.bewi.paging.Page;
+import com.bewi.paging.Paged;
+import com.bewi.paging.Paging;
 
 @Service
 public class EmployeeService {

@@ -1,4 +1,4 @@
-package com.bewi.stockmanager.model.paging;
+package com.bewi.paging;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

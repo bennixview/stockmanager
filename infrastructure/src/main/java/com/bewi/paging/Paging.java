@@ -1,4 +1,4 @@
-package com.bewi.stockmanager.model.paging;
+package com.bewi.paging;
 
 import java.util.ArrayList;
 import java.util.List;

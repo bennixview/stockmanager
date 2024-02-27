@@ -1,6 +1,8 @@
 package com.bewi.stockmanager.position;
 
+import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -16,22 +18,26 @@ public class Position {
 
     private final UUID id;
     private final String name;
-
-    //private final int quantity;
     private Set<SubPosition> subPositions = new HashSet<>();
 
-    public Position(String name, int strikeprice, int quantity) {
+
+    @Builder
+    public Position(@Nonnull final String name, final int strikeprice, final int quantity, final OffsetDateTime strikeDate) {
         this.id = UUID.randomUUID();
         this.name = name;
 
 
         subPositions.add(
-                new SubPosition(strikeprice, quantity, OffsetDateTime.now()));
+                new SubPosition(strikeprice, quantity, strikeDate));
 
     }
 
     public int getStrikeprice() {
-        return 1; //subPositions.stream().mapToInt(SubPosition::getStrikeprice).sum();
+        return subPositions.stream().mapToInt(SubPosition::strikeprice).sum();
+    }
+
+    public int getQuantity() {
+        return subPositions.stream().mapToInt(SubPosition::quantity).sum();
     }
 
 

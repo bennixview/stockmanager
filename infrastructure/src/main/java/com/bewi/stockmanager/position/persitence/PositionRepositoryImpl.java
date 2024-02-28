@@ -7,6 +7,7 @@ import com.bewi.stockmanager.position.dto.PositionDTOMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,11 +24,14 @@ public class PositionRepositoryImpl implements PositionRepository {
     private final Set<Position> positions = new HashSet<>();
     private final PositionDTOMapper positionDTOMapper;
     private final String filePath = "positions.json";
-    ObjectMapper objectMapper = new ObjectMapper();
 
     private Set<Position> getPositions() {
         if (positions.isEmpty()) {
-            positions.addAll(readPositionsFromFile(filePath).stream().map(positionDTOMapper::toDomain).toList());
+
+            List<PositionDTO> positionDTOS = readPositionsFromFile(filePath);
+
+
+            positions.addAll(positionDTOS.stream().map(positionDTOMapper::toDomain).toList());
             System.out.println("Read positions: " + positions);
         }
         return positions;
@@ -47,7 +51,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     @Override
     public Collection<Position> findAll() {
-        return getPositions().stream().collect(Collectors.toUnmodifiableList());
+        return getPositions().stream().toList();
     }
 
     @Override
@@ -62,8 +66,9 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     private static List<PositionDTO> readPositionsFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         try {
-            return objectMapper.readValue(new File(filePath), new TypeReference<List<PositionDTO>>() {
+            return objectMapper.readValue(new File(filePath), new TypeReference<>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,6 +78,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     private static void writePositionsToFile(List<PositionDTO> positions, String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // Ignore null fields
         try {
             objectMapper.writeValue(new File(filePath), positions);

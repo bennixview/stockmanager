@@ -1,11 +1,2 @@
 {
-  "extends": ["config:base"],
-  "packageRules": [
-    {
-      "managers": ["maven"],
-      "schedule": ["at any time"],
-      "updateTypes": ["minor", "patch"],
-      "automerge": true
-    }
-  ]
 }

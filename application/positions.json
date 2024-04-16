@@ -1,1 +1,265 @@
-[{"id":"68eb0fa3-c639-4f6f-b0cc-54010c14dfe6","name":"Amazon","subPositions":[{"strikeprice":1000,"quantity":100}],"strikeprice":1000},{"id":"a8927f84-3b6f-480d-9698-12d92c62d669","name":"Amazon","subPositions":[{"strikeprice":1000,"quantity":0}],"strikeprice":1000}]
+[
+  {
+    "id": "9dd63fae-1106-4b4c-8eaa-3d87d1fa3e93",
+    "name": "RWE AG",
+    "subPositions": [
+      {
+        "strikeprice": 26.73,
+        "quantity": 80,
+        "strikeDate": "2019-09-02T10:58:00+01:00"
+      },
+      {
+        "strikeprice": 40.8,
+        "quantity": 220,
+        "strikeDate": "2007-06-02T23:11:00+01:00"
+      },
+      {
+        "strikeprice": 40.8,
+        "quantity": 30,
+        "strikeDate": "2007-11-20T23:15:00+01:00"
+      },
+      {
+        "strikeprice": 40.8,
+        "quantity": 20,
+        "strikeDate": "2008-11-20T23:18:00+01:00"
+      },
+      {
+        "strikeprice": 28.38,
+        "quantity": 14,
+        "strikeDate": "2011-11-21T23:21:00+01:00"
+      },
+      {
+        "strikeprice": 26.0,
+        "quantity": 41,
+        "strikeDate": "2011-12-27T23:21:00+01:00"
+      },
+      {
+        "strikeprice": 31.49,
+        "quantity": 40,
+        "strikeDate": "2012-11-20T23:23:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "b4345faf-f08a-4d9d-b204-1033c402cf8f",
+    "name": "PowerCell Sweden AB (publ)",
+    "subPositions": [
+      {
+        "strikeprice": 26.76,
+        "quantity": 40,
+        "strikeDate": "2020-06-04T07:15:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "ec7b6e9e-4d82-45c2-892d-f40b35c4b939",
+    "name": "iShares Global Clean Energy UCITS ETF Dist. USD",
+    "subPositions": [
+      {
+        "strikeprice": 9.77,
+        "quantity": 240,
+        "strikeDate": "2020-11-02T16:10:00+01:00"
+      },
+      {
+        "strikeprice": 11.084,
+        "quantity": 180,
+        "strikeDate": "2021-09-13T16:38:00+01:00"
+      },
+      {
+        "strikeprice": 9.22,
+        "quantity": 110,
+        "strikeDate": "2022-02-15T09:41:00+01:00"
+      },
+      {
+        "strikeprice": 11.31,
+        "quantity": 133,
+        "strikeDate": "2023-01-17T08:11:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "be2e048c-cf0b-4037-b82a-df164542df5d",
+    "name": "SAP SE",
+    "subPositions": [
+      {
+        "strikeprice": 94.08,
+        "quantity": 10,
+        "strikeDate": "2020-11-03T20:20:00+01:00"
+      },
+      {
+        "strikeprice": 107.78,
+        "quantity": 10,
+        "strikeDate": "2023-01-13T12:20:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "c328dca6-dbff-43c9-ac33-415204c16916",
+    "name": "Amundi MSCI New Energy ESG Screened UCITS ETF Dist. EUR",
+    "subPositions": [
+      {
+        "strikeprice": 45.68,
+        "quantity": 70,
+        "strikeDate": "2021-02-08T21:38:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "4366c7ef-dc52-4382-a2be-70ec4d371cff",
+    "name": "iShares MSCI ACWI UCITS ETF Acc. USD",
+    "subPositions": [
+      {
+        "strikeprice": 62.28,
+        "quantity": 33,
+        "strikeDate": "2021-09-13T16:35:00+01:00"
+      },
+      {
+        "strikeprice": 65.64,
+        "quantity": 16,
+        "strikeDate": "2022-01-10T09:46:00+01:00"
+      },
+      {
+        "strikeprice": 63.32,
+        "quantity": 16,
+        "strikeDate": "2022-02-15T09:43:00+01:00"
+      },
+      {
+        "strikeprice": 60.09,
+        "quantity": 25,
+        "strikeDate": "2023-01-16T18:33:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "0637681d-f10b-4ec0-97b0-16e08f764adb",
+    "name": "FE Battery Metals Corp",
+    "subPositions": [
+      {
+        "strikeprice": 0.999,
+        "quantity": 1052,
+        "strikeDate": "2022-01-10T09:40:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "092bcd8f-d5f7-4f47-9cd0-035bbc485686",
+    "name": "iShares NASDAQ-100 UCITS ETF (DE)",
+    "subPositions": [
+      {
+        "strikeprice": 131.14,
+        "quantity": 16,
+        "strikeDate": "2022-01-10T17:36:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "25dd2c5e-bb39-41b3-b973-f7acca460d5b",
+    "name": "iShares S&P U.S. Banks UCITS ETF Acc. USD",
+    "subPositions": [
+      {
+        "strikeprice": 6.292,
+        "quantity": 240,
+        "strikeDate": "2022-01-14T12:49:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "290969bd-f857-4f4b-be71-21a0ed020a05",
+    "name": "UBS ETF MSCI USA Value UCITS ETF A Dist. USD",
+    "subPositions": [
+      {
+        "strikeprice": 87.77,
+        "quantity": 20,
+        "strikeDate": "2022-02-01T12:33:00+01:00"
+      },
+      {
+        "strikeprice": 89.5,
+        "quantity": 12,
+        "strikeDate": "2023-01-13T11:59:00+01:00"
+      },
+      {
+        "strikeprice": 84.61,
+        "quantity": 12,
+        "strikeDate": "2023-07-18T16:01:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "8f1eefc6-87f9-49d6-aff2-c506ad1eeb0e",
+    "name": "iShares Edge MSCI Europe Value Factor UCITS ETF Acc. EUR",
+    "subPositions": [
+      {
+        "strikeprice": 7.669,
+        "quantity": 400,
+        "strikeDate": "2022-02-15T09:39:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "9c34c40c-5a0a-4fa0-aab6-cad56e85f801",
+    "name": "Fuelcell Energy Inc.",
+    "subPositions": [
+      {
+        "strikeprice": 5.5,
+        "quantity": 100,
+        "strikeDate": "2022-03-07T12:13:00+01:00"
+      },
+      {
+        "strikeprice": 4.194,
+        "quantity": 120,
+        "strikeDate": "2022-04-25T19:49:00+01:00"
+      },
+      {
+        "strikeprice": 1.832,
+        "quantity": 250,
+        "strikeDate": "2023-04-24T19:39:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "0fb39bf3-ab41-4657-a2ab-59959f1a3580",
+    "name": "iShares NASDAQ 100 UCITS ETF Acc. EUR",
+    "subPositions": [
+      {
+        "strikeprice": 9.626,
+        "quantity": 100,
+        "strikeDate": "2022-03-29T16:54:00+01:00"
+      },
+      {
+        "strikeprice": 8.493,
+        "quantity": 120,
+        "strikeDate": "2022-04-25T18:36:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  },
+  {
+    "id": "bf67c53b-7edc-4d78-ac7b-45f788cbb8ce",
+    "name": "Amazon.com Inc.",
+    "subPositions": [
+      {
+        "strikeprice": 90.76,
+        "quantity": 10,
+        "strikeDate": "2023-01-17T08:21:00+01:00"
+      },
+      {
+        "strikeprice": 129.18,
+        "quantity": 17,
+        "strikeDate": "2023-11-01T20:20:00+01:00"
+      }
+    ],
+    "strikeprice": 1
+  }
+]

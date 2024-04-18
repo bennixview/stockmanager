@@ -1,12 +1,15 @@
 package com.bewi.stockmanager.position.persitence;
 
+import com.bewi.paging.Page;
+import com.bewi.paging.Paged;
+import com.bewi.paging.Paging;
 import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.PositionRepository;
 import com.bewi.stockmanager.position.dto.PositionDTO;
 import com.bewi.stockmanager.position.dto.PositionDTOMapper;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -38,9 +41,6 @@ public class PositionRepositoryImpl implements PositionRepository {
     }
 
 
-
-
-
     @Override
     public Position save(Position position) {
         getPositions().add(position);
@@ -62,6 +62,16 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public void delete(Position Position) {
 
+    }
+
+    public Paged<Position> getPositions(int pageNumber, int size) {
+        Collection<Position> allPositions = this.findAll();
+        List<Position> paged = allPositions.stream()
+                .skip(pageNumber)
+                .limit(size)
+                .collect(Collectors.toList());
+        int totalPages = allPositions.size() / size;
+        return new Paged<>(new Page<>(paged, totalPages), Paging.of(totalPages, pageNumber, size));
     }
 
     private static List<PositionDTO> readPositionsFromFile(String filePath) {
@@ -86,4 +96,6 @@ public class PositionRepositoryImpl implements PositionRepository {
             e.printStackTrace();
         }
     }
+
+
 }

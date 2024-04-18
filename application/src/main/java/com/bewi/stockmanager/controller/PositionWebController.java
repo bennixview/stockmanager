@@ -1,6 +1,6 @@
 package com.bewi.stockmanager.controller;
 
-import com.bewi.stockmanager.position.PositionRepository;
+import com.bewi.stockmanager.position.persitence.PositionRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/positions/")
 public class PositionWebController {
 
-    private final PositionRepository positionRepository;
+    private final PositionRepositoryImpl positionRepository;
 
 
     @Autowired
-    public PositionWebController(PositionRepository positionRepository) {
+    public PositionWebController(PositionRepositoryImpl positionRepository) {
         this.positionRepository = positionRepository;
     }
 
     @GetMapping
     public String list(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
                        @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
-        model.addAttribute("positions", positionRepository.findAll());
-        return "list";
+        model.addAttribute("positions", positionRepository.getPositions(pageNumber, size));
+        return "positions";
     }
 
 }

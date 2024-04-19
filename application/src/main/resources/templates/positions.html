@@ -1,38 +1,38 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Content page</title>
+</head>
+<!--<!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>Spring Boot Thymeleaf Application - Bootstrap Table</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+</head>-->
 <body>
-
+<section layout:fragment="content">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
 <div class="container">
     <div class="row">
         <div class="col-lg-10 mt-5 mb-5">
-            <table id="example" class="table table-bordered" style="width: 100%">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <!--th>Position</th>
-                    <th>Office</th>
-                    <th>Start date</th>
-                    <th>Salary</th-->
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="position : ${positions.page.content}">
-                    <td th:text="${position.name}">Name</td>
-                    <!--td th:text="${position.position}">Position</td>
-                    <td th:text="${position.office}">Office</td>
-                    <td th:text="${#dates.format(position.startDate, 'dd.MM.yyyy')}">Start date</td>
-                    <td th:text="'$' + ${#numbers.formatDecimal(position.salary, 0, 'COMMA', 2, 'POINT')}">Salary</td-->
-                </tr>
-                </tbody>
-            </table>
-
+            <ul class="list-group ">
+                <li th:each="position : ${positions.page.content}" >
+                    <div class="card" style="width: 18rem;">
+                        <i class="bi bi-bar-chart"></i>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${position.name}">Card title</h5>
+                            <p class="card-text" th:text="${position.getStrikeprice()}"></p>
+                            <p class="card-text" th:text="${position.getQuantity()}"></p>
+                            <a href="#" class="btn btn-primary">Show Details</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
             <nav aria-label="Page navigation" class="paging">
                 <ul class="pagination" th:if="${positions.page.totalPages > 1}">
                     <li class="page-item" th:classappend="${!positions.paging.isPrevEnabled()? 'disabled' : ''}">
@@ -67,6 +67,8 @@
 
 
 </script>
+    </main>
 
+</section>
 </body>
 </html>

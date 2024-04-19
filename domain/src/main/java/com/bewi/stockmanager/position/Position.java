@@ -18,14 +18,17 @@ public class Position {
 
     private final UUID id;
     private final String name;
+    private final String wkn;
+    private final String isin;
     private Set<SubPosition> subPositions = new HashSet<>();
 
 
     @Builder
-    public Position(@Nonnull final String name, final int strikeprice, final int quantity, final OffsetDateTime strikeDate) {
+    public Position(@Nonnull final String name, final int strikeprice, final int quantity, final OffsetDateTime strikeDate, final String wkn, final String isin) {
         this.id = UUID.randomUUID();
         this.name = name;
-
+        this.wkn = wkn;
+        this.isin = isin;
 
         subPositions.add(
                 new SubPosition(strikeprice, quantity, strikeDate));
@@ -39,8 +42,6 @@ public class Position {
     public int getQuantity() {
         return subPositions.stream().mapToInt(SubPosition::quantity).sum();
     }
-
-
 
 
 }

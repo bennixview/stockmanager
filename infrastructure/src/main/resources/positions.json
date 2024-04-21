@@ -2,7 +2,8 @@
   {
     "id": "9ae62a9b-9545-4a02-8298-14f98ad5432f",
     "name": "Amazon",
-    "subPositions": [
+    "wkn" : "12345",
+    "tranches": [
       {
         "strikeprice": 1000,
         "quantity": 100,

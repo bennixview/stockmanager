@@ -1,6 +1,9 @@
 package com.bewi.stockmanager.controller;
 
+import com.bewi.paging.Paged;
+import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.persitence.PositionRepositoryImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +24,10 @@ public class PositionWebController {
     }
 
     @GetMapping
-    public String list(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-                       @RequestParam(value = "size", required = false, defaultValue = "10") int size, Model model) {
-        model.addAttribute("positions", positionRepository.getPositions(pageNumber, size));
+    public String list(@RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+                       @RequestParam(value = "size", required = false, defaultValue = "5") int size, Model model) {
+        Paged<Position> positions = positionRepository.getPositions(pageNumber, size);
+        model.addAttribute("positions", positions);
         return "positions";
     }
 

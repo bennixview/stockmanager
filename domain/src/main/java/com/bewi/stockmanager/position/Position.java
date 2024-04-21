@@ -7,41 +7,60 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.util.Objects.requireNonNullElse;
+
 @EqualsAndHashCode
 @AllArgsConstructor
-@Getter
 public class Position {
-
+    @Getter
     private final UUID id;
+    @Getter
     private final String name;
+    @Getter
     private final String wkn;
+    @Getter
     private final String isin;
-    private Set<SubPosition> subPositions = new HashSet<>();
+    private Set<Tranche> tranches = new HashSet<>();
 
 
     @Builder
-    public Position(@Nonnull final String name, final int strikeprice, final int quantity, final OffsetDateTime strikeDate, final String wkn, final String isin) {
-        this.id = UUID.randomUUID();
+    public Position(UUID id, @Nonnull final String name, final int strikeprice, final int quantity, final OffsetDateTime strikeDate, @Nonnull final String wkn, final String isin, Set<Tranche> tranches) {
+        this.id = requireNonNullElse(id, UUID.randomUUID());
         this.name = name;
         this.wkn = wkn;
         this.isin = isin;
+        this.addTranche(strikeprice, quantity, strikeDate);
+        this.addAllTranche(tranches);
+    }
 
-        subPositions.add(
-                new SubPosition(strikeprice, quantity, strikeDate));
+    private void addTranche(int strikeprice, int quantity, OffsetDateTime strikeDate) {
+        this.addTranche(new Tranche(strikeprice, quantity, strikeDate == null ? OffsetDateTime.now() : strikeDate));
+    }
 
+
+    public void addAllTranche(Set<Tranche> tranches) {
+        if (tranches == null) return;
+        tranches.forEach(this::addTranche);
+    }
+
+    public void addTranche(Tranche tranche) {
+        if (tranche.quantity() != 0 && tranche.strikeprice() != 0) tranches.add(tranche);
     }
 
     public int getStrikeprice() {
-        return subPositions.stream().mapToInt(SubPosition::strikeprice).sum();
+        return tranches.stream().mapToInt(Tranche::strikeprice).sum();
     }
 
     public int getQuantity() {
-        return subPositions.stream().mapToInt(SubPosition::quantity).sum();
+        return tranches.stream().mapToInt(Tranche::quantity).sum();
     }
 
-
+    public Set<Tranche> getTranches() {
+        return Collections.unmodifiableSet(tranches);
+    }
 }

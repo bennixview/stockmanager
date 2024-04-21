@@ -6,7 +6,7 @@ import com.bewi.paging.Paging;
 import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.PositionRepository;
 import com.bewi.stockmanager.position.dto.PositionDTO;
-import com.bewi.stockmanager.position.dto.PositionDTOMapper;
+import com.bewi.stockmanager.position.dto.PositionMapper;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,23 +19,24 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This is just an example of a Repository that uses for now a json file instead of database.
+ * If you want to use JPA or MongoDB Repository it is a good approach to delegate to a seperate
+ * Spring interface repository as DAO
+ */
+
 
 @Component
 @RequiredArgsConstructor
 public class PositionRepositoryImpl implements PositionRepository {
 
     private final Set<Position> positions = new HashSet<>();
-    private final PositionDTOMapper positionDTOMapper;
+    private final PositionMapper positionMapper;
     private final String filePath = "positions.json";
 
     private Set<Position> getPositions() {
         if (positions.isEmpty()) {
-
-            List<PositionDTO> positionDTOS = readPositionsFromFile(filePath);
-
-
-            positions.addAll(positionDTOS.stream().map(positionDTOMapper::toDomain).toList());
-            System.out.println("Read positions: " + positions);
+            readPositionsFromFile(filePath).forEach(positionDTO -> positions.add(positionMapper.toDomain(positionDTO)));
         }
         return positions;
     }
@@ -44,7 +45,7 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public Position save(Position position) {
         getPositions().add(position);
-        writePositionsToFile(getPositions().stream().map(positionDTOMapper::toDTO).toList(), filePath);
+        writePositionsToFile(getPositions().stream().map(positionMapper::toDTO).toList(), filePath);
         System.out.println("Updated positions written back to file.");
         return position;
     }
@@ -55,7 +56,7 @@ public class PositionRepositoryImpl implements PositionRepository {
     }
 
     @Override
-    public Optional<Position> findByVin(String vin) {
+    public Optional<Position> findByWKN(String wkn) {
         return Optional.empty();
     }
 
@@ -67,14 +68,14 @@ public class PositionRepositoryImpl implements PositionRepository {
     public Paged<Position> getPositions(int pageNumber, int size) {
         Collection<Position> allPositions = this.findAll();
         List<Position> paged = allPositions.stream()
-                .skip(pageNumber)
                 .limit(size)
+                .skip(pageNumber)
                 .collect(Collectors.toList());
         int totalPages = allPositions.size() / size;
         return new Paged<>(new Page<>(paged, totalPages), Paging.of(totalPages, pageNumber, size));
     }
 
-    private static List<PositionDTO> readPositionsFromFile(String filePath) {
+    public static List<PositionDTO> readPositionsFromFile(String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         try {

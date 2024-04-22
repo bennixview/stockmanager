@@ -3,6 +3,8 @@ package com.bewi.stockmanager.controller;
 
 import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.PositionRepository;
+import com.bewi.stockmanager.position.dto.PositionDTO;
+import com.bewi.stockmanager.position.dto.PositionMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,31 +21,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
+/*
+ PositionController can be used to orchestrate the domain.
+ It should not contain business logic and is just a thin mapper
+ from REST to the Domain.
+ */
+
 @RestController
 @RequestMapping("/api/positions/")
 @Tag(name = "Position", description = "Operations related to positions")
 public class PositionController {
 
-    @Autowired
     private PositionRepository positionRepository;
+    private PositionMapper positionMapper;
 
     @Operation(summary = "Returns all Positions")
     @GetMapping
-    public ResponseEntity<List<Position>> getPositions() {
-        return ResponseEntity.ok(positionRepository.findAll().stream().toList());
+    public ResponseEntity<List<PositionDTO>> getPositions() {
+        return ResponseEntity.ok(positionRepository.findAll().stream().map(positionMapper::toDTO).toList());
     }
 
     @Operation(summary = "Creates a Position by id")
     @PostMapping
-    public ResponseEntity<Position> createPosition(@RequestBody Position position) {
-        Position createdPosition = positionRepository.save(position);
+    public ResponseEntity<PositionDTO> createPosition(@RequestBody PositionDTO position) {
+        PositionDTO createdPosition = positionMapper
+                .toDTO(positionRepository
+                        .save(positionMapper.toDomain(position)));
         return new ResponseEntity<>(createdPosition, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Updates a Position by id")
     @PatchMapping("/{id}")
-    public ResponseEntity<Position> updatePosition(@PathVariable Long id, @RequestBody Position positionUpdates) {
-       // Position updatedPosition = positionService.updatePosition(id, positionUpdates);
+    public ResponseEntity<PositionDTO> updatePosition(@PathVariable Long id, @RequestBody PositionDTO positionUpdates) {
+        // Position updatedPosition = positionService.updatePosition(id, positionUpdates);
         return ResponseEntity.ok(positionUpdates);
     }
 }

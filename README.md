@@ -9,3 +9,7 @@ To run the application with mavem, just execute the following command:
 
 ```mvn spring-boot:run```
 
+By calling the URL http://localhost:8080/ you get the initial Dashboard of the UI.
+
+The OpenAPI Definition can be found here: http://localhost:8080/swagger-ui/index.html
+

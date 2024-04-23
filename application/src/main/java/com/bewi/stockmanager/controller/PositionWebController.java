@@ -3,7 +3,6 @@ package com.bewi.stockmanager.controller;
 import com.bewi.paging.Paged;
 import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.persitence.PositionRepositoryImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

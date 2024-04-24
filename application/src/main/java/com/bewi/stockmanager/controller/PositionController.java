@@ -1,6 +1,7 @@
 package com.bewi.stockmanager.controller;
 
 
+import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.PositionRepository;
 import com.bewi.stockmanager.position.dto.PositionDTO;
 import com.bewi.stockmanager.position.dto.PositionMapper;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  PositionController can be used to orchestrate the domain.
@@ -35,7 +37,21 @@ public class PositionController {
     @Operation(summary = "Returns all Positions")
     @GetMapping
     public ResponseEntity<List<PositionDTO>> getPositions() {
-        return ResponseEntity.ok(positionRepository.findAll().stream().map(positionMapper::toDTO).toList());
+        return ResponseEntity.ok(positionRepository.findAll()
+                .stream().map(positionMapper::toDTO).toList());
+    }
+
+    @Operation(summary = "Returns a Position by WKN")
+    @GetMapping("/{wkn}")
+    public ResponseEntity<PositionDTO> getPositionByWkn(@PathVariable String wkn) {
+        Optional<Position> byWKN = positionRepository.findByWKN(wkn);
+        if (byWKN.isPresent()) {
+            PositionDTO dto = positionMapper.toDTO(byWKN.get());
+            //TODO
+            dto.price = "42.42";
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @Operation(summary = "Creates a Position by id")

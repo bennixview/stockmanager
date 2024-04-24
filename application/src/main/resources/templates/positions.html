@@ -23,12 +23,12 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <p th:text="'Stückzahl: ' + ${position.getQuantity()}">Stückzahl: 100</p>
-                                            <p>WKN: 865985</p>
+                                            <p th:text="'Wkn: ' + ${position.getWkn()}">WKN: 865985</p>
                                             <p>Börse: NASDAQ</p>
                                         </div>
                                         <div class="col-6 text-end">
                                             <p style="color: green;">Gewinn: +5%</p>
-                                            <p>Aktueller Kurs: €150</p>
+                                            <p><stock-price id="${position.getWkn()}"></stock-price></p>
                                             <p th:text="'Kaufkurs: ' + ${position.getStrikeprice()}">Kaufkurs: €142</p>
                                         </div>
                                     </div>
@@ -39,6 +39,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                     <nav aria-label="Page navigation" class="paging">
@@ -75,5 +77,7 @@
     </main>
 
 </section>
+
+<script src="/js/stock-price.js"></script>
 </body>
 </html>

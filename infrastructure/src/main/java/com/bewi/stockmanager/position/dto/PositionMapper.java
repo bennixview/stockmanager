@@ -15,6 +15,7 @@ public interface PositionMapper {
     PositionMapper INSTANCE = Mappers.getMapper(PositionMapper.class);
 
     @Mapping(target = "id", source = "id", qualifiedByName = "UUIDToString")
+    @Mapping(target = "price", ignore = true)
     PositionDTO toDTO(Position position);
 
     @Mapping(target = "id", source = "id", qualifiedByName = "StringToUUID")

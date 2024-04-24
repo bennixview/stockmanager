@@ -10,5 +10,6 @@ public class PositionDTO {
     public Set<TrancheDTO> tranches;
     public int strikeprice;
     public int quantity;
+    public String price;
 
 }

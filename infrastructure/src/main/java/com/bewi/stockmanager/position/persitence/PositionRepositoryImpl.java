@@ -61,7 +61,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     @Override
     public Optional<Position> findByWKN(String wkn) {
-        return Optional.empty();
+        return positions.stream().filter(position -> position.getWkn().equals(wkn)).findFirst();
     }
 
     @Override

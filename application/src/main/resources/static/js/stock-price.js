@@ -2,7 +2,7 @@ class StockPrice extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.updateInterval = 300000; // Update every 5 minutes (300000 milliseconds)
+        this.updateInterval = 6000; // Update every 5 minutes (300000 milliseconds)
     }
 
     connectedCallback() {
@@ -42,14 +42,14 @@ class StockPrice extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <style>
                 .stock-container {
-                    background-color: #f8f9fa;
+                   /* background-color: #f8f9fa;
                     border: 1px solid #ced4da;
                     border-radius: 0.25rem;
                     padding: 15px;
                     margin-bottom: 10px;
                     display: flex;
                     flex-direction: column;
-                    gap: 10px;
+                    gap: 10px;*/
                 }
                 .stock-header {
                     font-size: 18px;
@@ -57,17 +57,17 @@ class StockPrice extends HTMLElement {
                     color: #343a40;
                 }
                 .stock-info {
-                    font-size: 16px;
-                    color: #495057;
+                  /*  font-size: 16px;
+                    color: #495057;*/
                 }
             </style>
             <div class="stock-container">
-                <div class="stock-header">${data.name} (ISIN: ${data.isin})</div>
-                <div class="stock-info">Strike Price: $${data.strikeprice}</div>
-                <div class="stock-info">Quantity: ${data.quantity}</div>
+              <!--div class="stock-header"></div-->
+                <div class="stock-info">Strike Price: ${data.price}</div>
+           
             </div>
         `;
     }
 }
 
-window.customElements.define('stock-price', StockPrice);
+customElements.define('stock-price', StockPrice);

@@ -31,8 +31,13 @@ import java.util.Optional;
 @Tag(name = "Position", description = "Operations related to positions")
 public class PositionController {
 
-    private PositionRepository positionRepository;
-    private PositionMapper positionMapper;
+    private final PositionRepository positionRepository;
+    private final PositionMapper positionMapper;
+
+    public PositionController(PositionRepository positionRepository, PositionMapper positionMapper) {
+        this.positionRepository = positionRepository;
+        this.positionMapper = positionMapper;
+    }
 
     @Operation(summary = "Returns all Positions")
     @GetMapping
@@ -48,7 +53,7 @@ public class PositionController {
         if (byWKN.isPresent()) {
             PositionDTO dto = positionMapper.toDTO(byWKN.get());
             //TODO
-            dto.price = "42.42";
+            dto.price = String.format("%.2f", 42.0 + new java.util.Random().nextDouble() * 0.99);
             return ResponseEntity.ok(dto);
         }
         return ResponseEntity.notFound().build();

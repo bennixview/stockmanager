@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="col-6 text-end">
                                             <p style="color: green;">Gewinn: +5%</p>
-                                            <p><stock-price id="${position.getWkn()}"></stock-price></p>
+                                            <p><stock-price th:id="${position.getWkn()}"></stock-price></p>
                                             <p th:text="'Kaufkurs: ' + ${position.getStrikeprice()}">Kaufkurs: €142</p>
                                         </div>
                                     </div>

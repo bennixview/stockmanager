@@ -51,6 +51,8 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       run: |
         docker build -t stockmanager .
+        docker tag stockmanager ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/stockmanager:${{ github.sha }}
+        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/stockmanager:${{ github.sha }}
         docker tag stockmanager ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/stockmanager:latest
         docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/stockmanager:latest
 

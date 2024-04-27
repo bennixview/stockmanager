@@ -57,7 +57,7 @@ jobs:
   deploy-2-dev:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/develop'
     steps:
     - uses: actions/checkout@v2
     - name: Deploy to Development
@@ -66,7 +66,7 @@ jobs:
   deploy-2-qa:
     needs: deploy-2-dev
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    #if: github.ref == 'refs/heads/develop'
     steps:
     - uses: actions/checkout@v2
     - name: Deploy to Development
@@ -75,7 +75,7 @@ jobs:
   deploy-2-prod:
     needs: deploy-2-qa
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' && github.event.inputs.deployToProd == 'Yes'
+    if: github.event.inputs.deployToProd == 'Yes'
     steps:
     - uses: actions/checkout@v2
     - name: Deploy to Development

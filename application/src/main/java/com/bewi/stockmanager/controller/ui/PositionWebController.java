@@ -1,4 +1,4 @@
-package com.bewi.stockmanager.controller;
+package com.bewi.stockmanager.controller.ui;
 
 import com.bewi.paging.Paged;
 import com.bewi.stockmanager.position.Position;

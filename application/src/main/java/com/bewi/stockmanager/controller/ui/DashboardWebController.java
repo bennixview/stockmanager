@@ -1,4 +1,4 @@
-package com.bewi.stockmanager.controller;
+package com.bewi.stockmanager.controller.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

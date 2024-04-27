@@ -1,4 +1,4 @@
-package com.bewi.stockmanager.controller;
+package com.bewi.stockmanager.controller.api;
 
 
 import com.bewi.stockmanager.position.Position;

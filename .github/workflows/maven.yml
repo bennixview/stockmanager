@@ -13,6 +13,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      deployToProd:
+        description: 'Deploy to production?'
+        required: true
+        default: 'No'  
 
 jobs:
   build:
@@ -47,4 +53,32 @@ jobs:
         docker build -t stockmanager .
         docker tag stockmanager ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/stockmanager:latest
         docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/stockmanager:latest
+
+  deploy-2-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to Development
+      run: echo "Deploying to Dev environment with image tag ${{ needs.build.outputs.image_tag }}"
+
+  deploy-2-qa:
+    needs: deploy-2-dev
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to Development
+      run: echo "Deploying to QA environment with image tag ${{ needs.build.outputs.image_tag }}"
+
+  deploy-2-prod:
+    needs: deploy-2-qa
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' && github.event.inputs.deployToProd == 'Yes'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to Development
+      run: echo "Deploying to QA environment with image tag ${{ needs.build.outputs.image_tag }}"            
+        
  

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Content page</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mt-5 mb-5">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                             style="font-weight: bold;">
+                            <span th:text="${position.name}">Apple Inc.</span>
+                            <span>€15,000</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p th:text="'Stückzahl: ' + ${position.getQuantity()}">Stückzahl: 100</p>
+                                    <p th:text="'Wkn: ' + ${position.getWkn()}">WKN: 865985</p>
+                                    <p>Börse: NASDAQ</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <p style="color: green;">Gewinn: +5%</p>
+                                    <p>
+                                        <stock-price th:id="${position.getWkn()}"></stock-price>
+                                    </p>
+                                    <p th:text="'Kaufkurs: ' + ${position.getStrikeprice()}">Kaufkurs: €142</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col align-self-end">
+                                    <a href="#" class="btn btn-primary">Open new Position</a>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        </script>
+    </main>
+
+</section>
+
+<script src="/js/stock-price.js"></script>
+</body>
+</html>

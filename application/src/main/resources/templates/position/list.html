@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout.html}">
+      layout:decorate="~{layout.html}" lang="en">
 <head>
     <title>Content page</title>
 </head>
@@ -28,13 +28,16 @@
                                         </div>
                                         <div class="col-6 text-end">
                                             <p style="color: green;">Gewinn: +5%</p>
-                                            <p><stock-price th:id="${position.getWkn()}"></stock-price></p>
+                                            <p>
+                                                <stock-price th:id="${position.getWkn()}"></stock-price>
+                                            </p>
                                             <p th:text="'Kaufkurs: ' + ${position.getStrikeprice()}">Kaufkurs: €142</p>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col align-self-end">
-                                            <a href="#" class="btn btn-primary">Show Details</a>
+                                            <a th:href="@{'/positions/' + ${position.getId()}}"
+                                               class="btn btn-primary">Show Details</a>
                                             <div>
                                             </div>
                                         </div>

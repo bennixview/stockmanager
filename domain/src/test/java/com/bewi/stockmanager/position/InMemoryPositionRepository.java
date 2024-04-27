@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class InMemoryPositionRepository implements PositionRepository {
 
@@ -29,5 +30,11 @@ public class InMemoryPositionRepository implements PositionRepository {
     @Override
     public void delete(Position position) {
         positionDB.remove(position.getWkn());
+    }
+
+    @Override
+    public Optional<Position> findById(UUID id) {
+        return positionDB.entrySet().stream()
+                .filter(entry -> entry.getValue().getId().equals(id)).findFirst().map(Map.Entry::getValue);
     }
 }

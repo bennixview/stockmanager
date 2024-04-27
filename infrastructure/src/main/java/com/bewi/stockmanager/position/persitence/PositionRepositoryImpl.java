@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +37,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     private final Set<Position> positions = new HashSet<>();
     private final PositionMapper positionMapper;
-    private final String filePath = "positions.json";
+    private static final String filePath = "positions.json";
 
     private Set<Position> getPositions() {
         if (positions.isEmpty()) {
@@ -49,7 +50,7 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public Position save(Position position) {
         getPositions().add(position);
-        writePositionsToFile(getPositions().stream().map(positionMapper::toDTO).toList(), filePath);
+        writePositionsToFile(getPositions().stream().map(positionMapper::toDTO).toList());
         System.out.println("Updated positions written back to file.");
         return position;
     }
@@ -67,6 +68,11 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public void delete(Position Position) {
 
+    }
+
+    @Override
+    public Optional<Position> findById(UUID id) {
+        return positions.stream().filter(position -> position.getId().equals(id)).findFirst();
     }
 
     public Paged<Position> getPositions(int pageNumber, int size) {
@@ -91,7 +97,7 @@ public class PositionRepositoryImpl implements PositionRepository {
         }
     }
 
-    private static void writePositionsToFile(List<PositionDTO> positions, String filePath) {
+    private static void writePositionsToFile(List<PositionDTO> positions) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // Ignore null fields

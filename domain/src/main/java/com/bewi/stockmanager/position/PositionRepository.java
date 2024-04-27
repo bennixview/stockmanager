@@ -2,6 +2,7 @@ package com.bewi.stockmanager.position;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 //TODO Marker Annotation Repository jmolecules
 public interface PositionRepository {
@@ -28,6 +29,13 @@ public interface PositionRepository {
      * @return The {@link Position} identified by then {@wkn} if available, otherwise null
      */
     Optional<Position> findByWKN(String wkn);
+
+    /**
+     * Method requests a secific {@link Position} identified by then {@id}
+     * @param id
+     * @return The {@link Position} identified by then {@id} if available, otherwise null
+     */
+    Optional<Position> findById(UUID id);
 
     /**
      * Delets the {@link Position}

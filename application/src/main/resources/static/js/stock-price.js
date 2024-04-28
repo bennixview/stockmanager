@@ -63,7 +63,7 @@ class StockPrice extends HTMLElement {
             </style>
             <div class="stock-container">
               <!--div class="stock-header"></div-->
-                <div class="stock-info">Strike Price: ${data.price}</div>
+                <div class="stock-info">Price: ${data.price}</div>
            
             </div>
         `;

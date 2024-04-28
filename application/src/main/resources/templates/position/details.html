@@ -34,9 +34,34 @@
                                     <p th:text="'Kaufkurs: ' + ${position.getStrikeprice()}">Kaufkurs: €142</p>
                                 </div>
                             </div>
+
+                            <!-- Tranches START -->
+
+                            <ul class="list-unstyled">
+                                <li th:each="tranche : ${position.getTranches()}">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p th:text="'Strike Date: ' + ${tranche.strikeDate}">Strike Date:
+                                                        01.01.2020</p>
+                                                    <p th:text="'Quantity: ' + ${tranche.quantity}">Quantity: 123</p>
+                                                    <p th:text="'Strike Price: ' + ${tranche.strikeprice}">Strike Price:
+                                                        €142</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <!-- Tranches ENDE -->
+
+
                             <div class="row">
                                 <div class="col align-self-end">
-                                    <a href="#" class="btn btn-primary">Open new Position</a>
+                                    <a th:href="@{'/positions/open/' + ${position.getId()}}"
+                                       class="btn btn-primary">Open new Position</a>
                                     <div>
                                     </div>
                                 </div>

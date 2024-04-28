@@ -14,8 +14,12 @@
             <div class="row">
                 <div class="col-lg-10 mt-5 mb-5">
                     <ul class="list-unstyled">
-                        <li class="p-1" th:each="position : ${positions.page.content}">
-                            <div class="card">
+                        <li th:each="position : ${positions.page.content}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div class="card" >
+                                <!-- Button trigger modal -->
+                      <!--          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Launch demo modal
+                                </button>-->
                                 <div class="card-header d-flex justify-content-between align-items-center"
                                      style="font-weight: bold;">
                                     <span th:text="${position.name}">Apple Inc.</span>
@@ -24,16 +28,16 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-6">
-                                            <p th:text="'Stückzahl: ' + ${position.getQuantity()}">Stückzahl: 100</p>
+                                            <p th:text="'Quantity: ' + ${position.getQuantity()}">Stückzahl: 100</p>
                                             <p th:text="'Wkn: ' + ${position.getWkn()}">WKN: 865985</p>
-                                            <p>Börse: NASDAQ</p>
+                                            <p>Stock: NASDAQ</p>
                                         </div>
                                         <div class="col-6 text-end">
-                                            <p style="color: green;">Gewinn: +5%</p>
+                                            <p style="color: green;">Profit: +5%</p>
                                             <p>
                                                 <stock-price th:id="${position.getWkn()}"></stock-price>
                                             </p>
-                                            <p th:text="'Kaufkurs: ' + ${position.getStrikeprice()}">Kaufkurs: €142</p>
+                                            <p th:text="'Strike Price: ' + ${position.getStrikeprice()}">Strike Price: €142</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -44,10 +48,34 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- Modal -->
+                                    <!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+             &lt;!&ndash;                                   <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>&ndash;&gt;
+                                                <div class="modal-body">
+                                                    <a th:href="@{'/positions/' + ${position.getId()}}"
+                                                       class="btn btn-primary">Show Details</a>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <a th:href="@{'/positions/open'}"
+                                                       class="btn btn-primary">Open new Position</a>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    &lt;!&ndash;<button type="button" class="btn btn-primary">Save changes</button>&ndash;&gt;
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </li>
                     </ul>
+
                     <nav aria-label="Page navigation" class="paging">
                         <ul class="pagination" th:if="${positions.page.totalPages > 1}">
                             <li class="page-item"

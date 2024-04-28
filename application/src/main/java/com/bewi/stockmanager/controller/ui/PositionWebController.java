@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -45,15 +46,15 @@ public class PositionWebController {
         return "position/details";
     }
 
-/*    @GetMapping("/open")
-    public String openPosition(Model model) {
-        model.addAttribute("position", new PositionDTO());
-        return "position/open";
+/*    @GetMapping("/open/")
+    public String openPosition(*//*Model model*//*) {
+        //model.addAttribute("order", new OrderDTO());
+         return "redirect:/open/1";
     }*/
 
     @GetMapping("/open/{id}")
     public String openPositionById(@PathVariable String id, Model model) {
-        var positions = positionRepository.findById(UUID.fromString(id));
+        Optional<Position> positions = id.equals("new") ? Optional.empty() : positionRepository.findById(UUID.fromString(id));
         if (positions.isEmpty()) {
             model.addAttribute("order", new OrderDTO());
             return "position/open";

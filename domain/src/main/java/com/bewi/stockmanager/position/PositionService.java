@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -49,7 +48,6 @@ public class PositionService {
 
 
             return this.positionRepository.save(Position.builder()
-                    .id(UUID.fromString(positionId))
                     .name(name)
                     .quantity(quantity)
                     .wkn(wkn)

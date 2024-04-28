@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     @Override
     public Collection<Position> findAll() {
-        return getPositions().stream().toList();
+        return getPositions().stream().sorted(Comparator.comparing(Position::getName)).toList();
     }
 
     @Override
@@ -78,10 +79,10 @@ public class PositionRepositoryImpl implements PositionRepository {
     public Paged<Position> getPositions(int pageNumber, int size) {
         Collection<Position> allPositions = this.findAll();
         List<Position> paged = allPositions.stream()
+                .skip(pageNumber )
                 .limit(size)
-                .skip(pageNumber)
                 .collect(Collectors.toList());
-        int totalPages = allPositions.size() / size;
+        int totalPages = (allPositions.size() + size - 1) / size;
         return new Paged<>(new Page<>(paged, totalPages), Paging.of(totalPages, pageNumber, size));
     }
 

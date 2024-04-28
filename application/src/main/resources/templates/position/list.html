@@ -12,6 +12,14 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="container">
             <div class="row">
+                <div class="col align-self-end">
+                    <a th:href="@{'/positions/open/' + 'new'}"
+                       class="btn btn-primary">Open new Position</a>
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-10 mt-5 mb-5">
                     <ul class="list-unstyled">
                         <li th:each="position : ${positions.page.content}" data-bs-toggle="modal" data-bs-target="#exampleModal">

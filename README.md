@@ -1,7 +1,9 @@
-# stockmanager
+# Stockmanager
 
 This is a simple example of a Stock Management to experiment with DDD and SSR / progressive enhancement.
 The idea is to have a fast tech stack for domain specific apps.
+
+![Stockmanager](./doc/img/Screen1.png)
 
 ## Run application
 

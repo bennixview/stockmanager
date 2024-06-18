@@ -1,7 +1,6 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.bewi.thymeleaf-bootstrap-table' is invalid and this project uses 'com.bewi.stockmanager' instead.
 
 # Getting Started
 

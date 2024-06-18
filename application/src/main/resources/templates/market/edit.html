@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      data-bs-theme="dark"
+      lang="en">
+<head>
+    <title>Content page</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mt-5 mb-5">
+                    <div class="card card-primary card-outline mb-4"> <!--begin::Header-->
+                        <div class="card-header">
+                            <div class="card-title"><p th:text="'Edit Market with ID: ' + ${market.getId()}">Edit
+                                Market</p></div>
+                        </div> <!--end::Header--> <!--begin::Form-->
+                        <form method="post" th:object="${market}" class="needs-validation" novalidate>
+                            <!--begin::Body-->
+                            <div class="card-body">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Name" aria-label="Name"
+                                           aria-describedby="basic-addon1" th:field="*{name}" required>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form> <!--end::Form-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            //TODO : need WebComponent
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        </script>
+    </main>
+</section>
+</body>
+</html>

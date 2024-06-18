@@ -9,12 +9,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.bewi</groupId>
-    <artifactId>stockmanager</artifactId>
+    <groupId>com.trianel</groupId>
+    <artifactId>masterdata</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>stockmanager</name>
-    <description>Demo project for Spring Boot</description>
+    <name>masterdata</name>
+    <description>Masterdata Service in Spring Boot</description>
 
     <modules>
         <module>application</module>

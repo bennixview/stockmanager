@@ -1,0 +1,78 @@
+[
+  {
+    "name": "AT",
+    "id": "480a8126-58b2-4d74-a8ca-26e9d66aba82"
+  },
+  {
+    "name": "BE",
+    "id": "84c0461c-3205-49eb-a488-38004a216d58"
+  },
+  {
+    "name": "CH",
+    "id": "7e0c8651-c94e-464a-8d0d-3ae753daba8d"
+  },
+  {
+    "name": "DE",
+    "id": "b82d8350-66dc-4640-8518-5c29e9ad1f38"
+  },
+  {
+    "name": "FR",
+    "id": "2afb9c2a-4921-4ff9-8280-4994ca50b947"
+  },
+  {
+    "name": "NL",
+    "id": "b60235cf-7dd6-429e-a952-6b7cb6c5ff82"
+  },
+  {
+    "name": "THE-H",
+    "id": "6d0ec0ef-7f0f-4dc5-94db-fd1123940a19"
+  },
+  {
+    "name": "THE-L",
+    "id": "cf1afff5-e5cc-4aae-860c-0284c45bc8ee"
+  },
+  {
+    "name": "TTF",
+    "id": "fc3ee85b-5a6b-4cc6-b9c9-30d66b888c4f"
+  },
+  {
+    "name": "NBP_FinHeren",
+    "id": "ea7b7b53-c7ba-477d-8ba3-6f2a71911d25"
+  },
+  {
+    "name": "AT_FinDA",
+    "id": "ed503ef4-1584-4250-8828-2711dc77ffca"
+  },
+  {
+    "name": "BE_FinDA",
+    "id": "ad25dcd6-7e4e-4ecb-b99e-3c6c2863b953"
+  },
+  {
+    "name": "CH_FinDA",
+    "id": "529bc93f-3ad9-486b-9f92-64c13ca90f75"
+  },
+  {
+    "name": "DE_FinDA",
+    "id": "647bff6d-6139-44da-82c2-eeb4a8b1a3ae"
+  },
+  {
+    "name": "ES_FinDA",
+    "id": "8707de8e-28de-46f5-9a6a-e512c7ced8c8"
+  },
+  {
+    "name": "FR_FinDA",
+    "id": "e91b6694-56fd-4010-965a-13b2f4e85d9f"
+  },
+  {
+    "name": "IT_FinDA",
+    "id": "0caf4dbe-da64-4ef4-a805-a551c57322bb"
+  },
+  {
+    "name": "NL_FinDA",
+    "id": "cc73aa35-3018-4c01-95c4-14bb06ddfdc2"
+  },
+  {
+    "name": "UK_FinDA",
+    "id": "cc73aa35-3018-4c01-95c4-15bb06ddfdc2"
+  }
+]

@@ -1,5 +1,5 @@
 # Start with a base image containing Java runtime (Java 21 is not officially available, using Java 17)
-FROM amazoncorretto:21-alpine3.19-jdk
+FROM amazoncorretto:22-alpine3.19-jdk
 
 # The application's jar file
 ARG JAR_FILE=application/target/*.jar

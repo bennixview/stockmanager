@@ -29,7 +29,7 @@
         <bootstrap.version>5.2.3</bootstrap.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <lombok.version>1.18.32</lombok.version>
-        <springdoc-openapi-ui.version>2.5.0</springdoc-openapi-ui.version>
+        <springdoc-openapi-ui.version>2.6.0</springdoc-openapi-ui.version>
     </properties>
 
 

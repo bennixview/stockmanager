@@ -28,7 +28,7 @@
         <webjars-locator.version>0.52</webjars-locator.version>
         <bootstrap.version>5.2.3</bootstrap.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
-        <lombok.version>1.18.32</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <springdoc-openapi-ui.version>2.6.0</springdoc-openapi-ui.version>
     </properties>
 

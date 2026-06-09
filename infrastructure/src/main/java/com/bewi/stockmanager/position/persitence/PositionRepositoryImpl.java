@@ -1,8 +1,5 @@
 package com.bewi.stockmanager.position.persitence;
 
-import com.bewi.paging.Page;
-import com.bewi.paging.Paged;
-import com.bewi.paging.Paging;
 import com.bewi.stockmanager.position.Position;
 import com.bewi.stockmanager.position.PositionRepository;
 import com.bewi.stockmanager.position.dto.PositionDTO;
@@ -12,6 +9,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * This is just an example of a Repository that uses for now a json file instead of database.
@@ -35,6 +33,8 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class PositionRepositoryImpl implements PositionRepository {
+
+    private static final Logger log = LoggerFactory.getLogger(PositionRepositoryImpl.class);
 
     private final Set<Position> positions = new HashSet<>();
     private final PositionMapper positionMapper;
@@ -52,7 +52,7 @@ public class PositionRepositoryImpl implements PositionRepository {
     public Position save(Position position) {
         getPositions().add(position);
         writePositionsToFile(getPositions().stream().map(positionMapper::toDTO).toList());
-        System.out.println("Updated positions written back to file.");
+        log.info("Updated positions written back to file.");
         return position;
     }
 
@@ -63,7 +63,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     @Override
     public Optional<Position> findByWKN(String wkn) {
-        return positions.stream().filter(position -> position.getWkn().equals(wkn)).findFirst();
+        return getPositions().stream().filter(position -> position.getWkn().equals(wkn)).findFirst();
     }
 
     @Override
@@ -73,17 +73,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     @Override
     public Optional<Position> findById(UUID id) {
-        return positions.stream().filter(position -> position.getId().equals(id)).findFirst();
-    }
-
-    public Paged<Position> getPositions(int pageNumber, int size) {
-        Collection<Position> allPositions = this.findAll();
-        List<Position> paged = allPositions.stream()
-                .skip(pageNumber )
-                .limit(size)
-                .collect(Collectors.toList());
-        int totalPages = (allPositions.size() + size - 1) / size;
-        return new Paged<>(new Page<>(paged, totalPages), Paging.of(totalPages, pageNumber, size));
+        return getPositions().stream().filter(position -> position.getId().equals(id)).findFirst();
     }
 
     public static List<PositionDTO> readPositionsFromFile(String filePath) {
@@ -93,7 +83,7 @@ public class PositionRepositoryImpl implements PositionRepository {
             return objectMapper.readValue(new File(filePath), new TypeReference<>() {
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn("Could not read positions from file '{}': {}", filePath, e.getMessage());
             return List.of(); // Return an empty list in case of error
         }
     }
@@ -105,7 +95,7 @@ public class PositionRepositoryImpl implements PositionRepository {
         try {
             objectMapper.writeValue(new File(filePath), positions);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Could not write positions to file '{}'", filePath, e);
         }
     }
 

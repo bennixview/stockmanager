@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title>Instrumente</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Instrumente</h1>
+        <span class="text-secondary small">Alles, wof&uuml;r dieses System einen Kurs liefert</span>
+    </div>
+
+    <form class="mb-4" th:action="@{/}" method="get">
+        <div class="input-group input-group-lg">
+            <span class="input-group-text">Suche</span>
+            <input class="form-control" type="search" name="query" th:value="${query}"
+                   placeholder="Symbol, Name, ISIN oder WKN"
+                   hx-get="/instruments/search" hx-trigger="keyup changed delay:250ms, search"
+                   hx-target="#results" hx-swap="outerHTML" autocomplete="off">
+            <button class="btn btn-primary" type="submit">Suchen</button>
+        </div>
+    </form>
+
+    <div id="results" th:fragment="results" class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+        <div class="col" th:each="instrument : ${instruments}">
+            <article class="card h-100 bg-body-tertiary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <a class="stretched-link text-decoration-none"
+                               th:href="@{'/instruments/' + ${instrument.symbol()}}">
+                                <h2 class="h6 mb-1" th:text="${instrument.name()}">Apple Inc.</h2>
+                            </a>
+                            <code class="text-info" th:text="${instrument.symbol()}">AAPL</code>
+                            <span class="badge text-bg-secondary ms-1" th:text="${instrument.type()}">STOCK</span>
+                        </div>
+                        <market-quote th:attr="symbol=${instrument.symbol()}" show="compact"></market-quote>
+                    </div>
+                    <dl class="row mb-0 mt-3 small text-secondary">
+                        <dt class="col-4">ISIN</dt>
+                        <dd class="col-8" th:text="${instrument.isin()}">-</dd>
+                        <dt class="col-4">WKN</dt>
+                        <dd class="col-8" th:text="${instrument.wkn()}">-</dd>
+                        <dt class="col-4">B&ouml;rse</dt>
+                        <dd class="col-8" th:text="${instrument.exchange()}">-</dd>
+                    </dl>
+                </div>
+            </article>
+        </div>
+        <p class="text-secondary" th:if="${#lists.isEmpty(instruments)}">
+            Nichts gefunden. Jedes Symbol, das die Kursquelle kennt, l&auml;sst sich trotzdem direkt
+            &uuml;ber <code>/api/quotes/{symbol}</code> abfragen.
+        </p>
+    </div>
+</section>
+</body>
+</html>

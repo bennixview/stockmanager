@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: marketdata
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:${MARKETDATA_DB_PATH:./data/marketdata};AUTO_SERVER=TRUE
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  thymeleaf:
+    cache: false
+
+server:
+  servlet:
+    session:
+      # no jsessionid in URLs
+      tracking-modes: cookie
+  port: ${MARKETDATA_PORT:8081}
+
+marketdata:
+  # simulated | yahoo | alphavantage - simulated needs neither an API key nor internet access
+  provider: ${MARKETDATA_PROVIDER:simulated}
+  quote-max-age: 30s
+  refresh-interval: 15s
+  cache:
+    maximum-size: 5000
+    time-to-live: 10m
+  yahoo:
+    base-url: https://query1.finance.yahoo.com
+  alpha-vantage:
+    base-url: https://www.alphavantage.co
+    # never commit a key: pass ALPHA_VANTAGE_API_KEY through the environment
+    api-key: ${ALPHA_VANTAGE_API_KEY:}
+  # browsers of these origins may read the API - the portfolio system's UI lives on 8080
+  allowed-origins:
+    - http://localhost:8080
+    - http://127.0.0.1:8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.bewi.stockmanager: INFO

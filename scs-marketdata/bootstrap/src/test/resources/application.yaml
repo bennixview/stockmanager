@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    # this file shadows the main application.yaml, so the settings that matter are repeated here
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+  flyway:
+    enabled: true
+  datasource:
+    url: jdbc:h2:mem:marketdata-boot-test;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+
+marketdata:
+  provider: simulated
+  refresh-interval: 1s
+
+logging:
+  level:
+    com.bewi.stockmanager: WARN
+    org.hibernate.SQL: WARN

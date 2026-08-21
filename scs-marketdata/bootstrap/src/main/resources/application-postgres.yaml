@@ -1,0 +1,7 @@
+# Run against PostgreSQL instead of the embedded H2 file database:
+#   java -jar marketdata.jar --spring.profiles.active=postgres
+spring:
+  datasource:
+    url: ${MARKETDATA_DB_URL:jdbc:postgresql://localhost:5432/marketdata}
+    username: ${MARKETDATA_DB_USER:marketdata}
+    password: ${MARKETDATA_DB_PASSWORD:}

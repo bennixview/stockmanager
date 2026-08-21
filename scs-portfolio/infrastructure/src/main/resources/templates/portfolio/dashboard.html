@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title th:text="${portfolio.name()}">Depot</title>
+</head>
+<body>
+<section layout:fragment="content">
+
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1" th:text="${portfolio.name()}">Mein Depot</h1>
+            <div class="btn-group btn-group-sm" th:if="${portfolio.portfolios().size() > 1}">
+                <a th:each="link : ${portfolio.portfolios()}"
+                   th:href="@{'/portfolios/' + ${link.id()}}"
+                   th:text="${link.name()}"
+                   th:classappend="${link.active()} ? 'btn-secondary' : 'btn-outline-secondary'"
+                   class="btn">Depot</a>
+            </div>
+        </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary" th:href="@{'/portfolios/' + ${portfolio.id()} + '/buy'}">Kaufen</a>
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newPortfolio">
+                Neues Depot
+            </button>
+        </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3 mb-4">
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Marktwert</div>
+                    <div class="fs-4 fw-semibold"
+                         th:text="${#numbers.formatDecimal(portfolio.marketValue(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${portfolio.currency()}">
+                        0,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Investiert</div>
+                    <div class="fs-4 fw-semibold"
+                         th:text="${#numbers.formatDecimal(portfolio.invested(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${portfolio.currency()}">
+                        0,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Nicht realisiert</div>
+                    <div class="fs-4 fw-semibold" th:classappend="${portfolio.up()} ? 'text-success' : 'text-danger'"
+                         th:text="${#numbers.formatDecimal(portfolio.unrealizedGain(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${portfolio.currency()}
+                                  + ' (' + ${#numbers.formatDecimal(portfolio.unrealizedGainPercent(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' %)'">
+                        0,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Realisiert</div>
+                    <div class="fs-4 fw-semibold"
+                         th:text="${#numbers.formatDecimal(portfolio.realizedGain(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${portfolio.currency()}">
+                        0,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" th:unless="${portfolio.complete()}">
+        Für <span th:text="${portfolio.unpricedPositions().size()}">1</span> Position(en) liegt kein Kurs vor.
+        Sie sind in den Summen nicht enthalten.
+    </div>
+
+    <div class="row g-4">
+        <div class="col-xl-8">
+            <div class="card bg-body-tertiary">
+                <div class="card-header">Positionen</div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                        <tr class="text-secondary small text-uppercase">
+                            <th>Instrument</th>
+                            <th class="text-end">Stück</th>
+                            <th class="text-end">Kaufkurs &oslash;</th>
+                            <th class="text-end">Kurs</th>
+                            <th class="text-end">Wert</th>
+                            <th class="text-end">G/V</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="row : ${portfolio.positions()}">
+                            <td>
+                                <a class="text-decoration-none"
+                                   th:href="@{'/portfolios/' + ${portfolio.id()} + '/positions/' + ${row.positionId()}}">
+                                    <span class="d-block" th:text="${row.name()}">Apple Inc.</span>
+                                    <code class="text-info small" th:text="${row.symbol()}">AAPL</code>
+                                </a>
+                            </td>
+                            <td class="text-end" th:text="${row.quantity()}">10</td>
+                            <td class="text-end"
+                                th:text="${#numbers.formatDecimal(row.averagePrice(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${row.currency()}">
+                                100,00 EUR
+                            </td>
+                            <td class="text-end">
+                                <!-- live, straight from the market data system -->
+                                <market-quote th:attr="symbol=${row.symbol()}" show="compact"></market-quote>
+                            </td>
+                            <td class="text-end"
+                                th:text="${row.priced()} ? ${#numbers.formatDecimal(row.marketValue(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${row.currency()} : '-'">
+                                1.000,00 EUR
+                            </td>
+                            <td class="text-end" th:classappend="${row.up()} ? 'text-success' : 'text-danger'"
+                                th:text="${row.priced()}
+                                    ? ${#numbers.formatDecimal(row.unrealizedGain(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' (' + ${#numbers.formatDecimal(row.unrealizedGainPercent(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' %)'
+                                    : '-'">
+                                +10,00 (1,00 %)
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-secondary"
+                                   th:href="@{'/portfolios/' + ${portfolio.id()} + '/positions/' + ${row.positionId()} + '/sell'}">
+                                    Verkaufen
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:each="row : ${portfolio.unpricedPositions()}" class="text-secondary">
+                            <td>
+                                <a class="text-decoration-none text-secondary"
+                                   th:href="@{'/portfolios/' + ${portfolio.id()} + '/positions/' + ${row.positionId()}}">
+                                    <span class="d-block" th:text="${row.name()}">Unbekannt</span>
+                                    <code class="small" th:text="${row.symbol()}">XYZ</code>
+                                </a>
+                            </td>
+                            <td class="text-end" th:text="${row.quantity()}">10</td>
+                            <td class="text-end"
+                                th:text="${#numbers.formatDecimal(row.averagePrice(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${row.currency()}">
+                                100,00 EUR
+                            </td>
+                            <td class="text-end" colspan="3">kein Kurs verfügbar</td>
+                            <td></td>
+                        </tr>
+                        <tr th:if="${portfolio.isEmpty()}">
+                            <td colspan="7" class="text-center text-secondary py-4">
+                                Noch keine Position. <a th:href="@{'/portfolios/' + ${portfolio.id()} + '/buy'}">Jetzt
+                                die erste kaufen.</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card bg-body-tertiary mt-4" th:if="${!portfolio.closedPositions().isEmpty()}">
+                <div class="card-header">Geschlossene Positionen</div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent d-flex justify-content-between"
+                        th:each="row : ${portfolio.closedPositions()}">
+                        <span th:text="${row.name()}">Tesla</span>
+                        <span th:classappend="${row.realizedGain().signum() < 0} ? 'text-danger' : 'text-success'"
+                              th:text="${#numbers.formatDecimal(row.realizedGain(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${row.currency()}">
+                            +120,00 EUR
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card bg-body-tertiary">
+                <div class="card-header">Aufteilung</div>
+                <div class="card-body">
+                    <canvas id="allocation" height="260"
+                            th:attr="data-allocation=${portfolio.allocationJson()}"></canvas>
+                    <ul class="list-unstyled small mb-0 mt-3" id="allocation-legend"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New portfolio -->
+    <div class="modal fade" id="newPortfolio" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" method="post" th:action="@{/portfolios}" th:object="${portfolioForm}">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5">Neues Depot</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="portfolio-name">Name</label>
+                        <input class="form-control" id="portfolio-name" th:field="*{name}" required>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('name')}"
+                             th:errors="*{name}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="portfolio-currency">Währung</label>
+                        <input class="form-control" id="portfolio-currency" th:field="*{currency}" maxlength="3">
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('currency')}"
+                             th:errors="*{currency}"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Anlegen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/allocation-chart.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="de" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title layout:title-pattern="$CONTENT_TITLE - Marktdaten">Marktdaten</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/marketdata.css}">
+    <script defer th:src="@{/webjars/htmx.org/dist/htmx.min.js}"></script>
+    <script defer th:src="@{/js/market-quote.js}"></script>
+</head>
+<body class="bg-body">
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom border-secondary-subtle">
+    <div class="container">
+        <a class="navbar-brand fw-semibold" th:href="@{/}">
+            <span class="badge text-bg-info me-2">SCS</span>Marktdaten
+        </a>
+        <div class="navbar-nav me-auto">
+            <a class="nav-link" th:href="@{/}">Instrumente</a>
+            <a class="nav-link" th:href="@{/swagger-ui.html}">API</a>
+        </div>
+        <a class="btn btn-outline-light btn-sm" th:href="${portfolioUrl}" th:if="${portfolioUrl != null}">
+            Depot &rarr;
+        </a>
+    </div>
+</nav>
+
+<main class="container py-4">
+    <section layout:fragment="content">
+        <p>Page content goes here</p>
+    </section>
+</main>
+
+<footer class="container py-4 text-secondary small border-top border-secondary-subtle">
+    Marktdaten-System &middot; besitzt Instrumente und Kurse &middot;
+    Quelle: <span class="text-info" th:text="${quoteProvider}">simulated</span>
+</footer>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- Page-specific scripts go here; anything outside a layout fragment is dropped. -->
+<th:block layout:fragment="scripts"></th:block>
+</body>
+</html>

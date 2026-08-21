@@ -1,0 +1,27 @@
+spring:
+  jpa:
+    # this file shadows the main application.yaml, so the settings that matter are repeated here
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+  flyway:
+    enabled: true
+  datasource:
+    url: jdbc:h2:mem:portfolio-boot-test;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+
+portfolio:
+  legacy-import:
+    enabled: false
+  market-data:
+    # deliberately nowhere: the application has to come up and stay usable without the other system
+    base-url: http://localhost:1
+    connect-timeout: 100ms
+    read-timeout: 100ms
+
+logging:
+  level:
+    com.bewi.stockmanager: WARN
+    org.hibernate.SQL: WARN

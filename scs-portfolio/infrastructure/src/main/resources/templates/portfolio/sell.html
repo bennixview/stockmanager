@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title>Verkaufen</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{'/portfolios/' + ${portfolioId}}">Depot</a></li>
+            <li class="breadcrumb-item active" th:text="${details.position().name()}">Position</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <form class="card bg-body-tertiary" method="post" th:object="${sellForm}"
+                  th:action="@{'/portfolios/' + ${portfolioId} + '/positions/' + ${details.position().positionId()} + '/sell'}">
+                <div class="card-header">
+                    Verkauf buchen &mdash; <span th:text="${details.position().name()}">Apple</span>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+                        <ul class="mb-0">
+                            <li th:each="error : ${#fields.allErrors()}" th:text="${error}">Fehler</li>
+                        </ul>
+                    </div>
+                    <input type="hidden" th:field="*{symbol}">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="quantity">Stück
+                                (max. <span th:text="${details.position().quantity()}">10</span>)</label>
+                            <input class="form-control" id="quantity" type="number" step="0.000001" min="0.000001"
+                                   th:field="*{quantity}" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="pricePerShare">Kurs je Stück</label>
+                            <input class="form-control" id="pricePerShare" type="number" step="0.0001" min="0.0001"
+                                   th:field="*{pricePerShare}" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="fee">Gebühren</label>
+                            <input class="form-control" id="fee" type="number" step="0.01" min="0" th:field="*{fee}">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="tradeDate">Handelstag</label>
+                            <input class="form-control" id="tradeDate" type="date" th:field="*{tradeDate}" required>
+                        </div>
+                    </div>
+                    <p class="text-secondary small mt-3 mb-0">
+                        Verkauft wird nach FIFO: die ältesten Tranchen zuerst.
+                    </p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a class="btn btn-outline-secondary"
+                       th:href="@{'/portfolios/' + ${portfolioId} + '/positions/' + ${details.position().positionId()}}">
+                        Abbrechen
+                    </a>
+                    <button type="submit" class="btn btn-danger">Verkauf buchen</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <div class="card bg-body-tertiary">
+                <div class="card-header">Offene Tranchen</div>
+                <table class="table mb-0">
+                    <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th>Datum</th>
+                        <th class="text-end">Stück</th>
+                        <th class="text-end">Kurs</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="tranche : ${details.tranches()}">
+                        <td th:text="${#temporals.format(tranche.tradeDate(), 'dd.MM.yyyy')}">01.01.2024</td>
+                        <td class="text-end" th:text="${tranche.quantity()}">10</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(tranche.pricePerShare(), 1, 'DEFAULT', 2, 'DEFAULT')}">
+                            100,00
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

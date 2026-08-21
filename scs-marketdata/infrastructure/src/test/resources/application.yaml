@@ -1,0 +1,19 @@
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+  test:
+    database:
+      replace: none
+  datasource:
+    url: jdbc:h2:mem:marketdata-test;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+
+logging:
+  level:
+    org.hibernate.SQL: warn

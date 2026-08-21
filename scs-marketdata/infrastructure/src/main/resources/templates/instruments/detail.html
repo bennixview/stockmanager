@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title th:text="${instrument.name()}">Instrument</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Instrumente</a></li>
+            <li class="breadcrumb-item active" th:text="${instrument.symbol()}">AAPL</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1" th:text="${instrument.name()}">Apple Inc.</h1>
+            <code class="text-info fs-6" th:text="${instrument.symbol()}">AAPL</code>
+            <span class="badge text-bg-secondary" th:text="${instrument.type()}">STOCK</span>
+            <span class="text-secondary small" th:text="${instrument.exchange()}">NASDAQ</span>
+        </div>
+        <market-quote th:attr="symbol=${instrument.symbol()}" show="full" class="fs-4"></market-quote>
+    </div>
+
+    <div class="btn-group btn-group-sm mb-3" role="group">
+        <a th:each="option : ${history.ranges()}"
+           th:href="@{'/instruments/' + ${instrument.symbol()}(range=${option.code()})}"
+           th:text="${option.label()}"
+           th:classappend="${option.active()} ? 'btn-primary' : 'btn-outline-secondary'"
+           class="btn">1M</a>
+    </div>
+
+    <div class="card bg-body-tertiary mb-4">
+        <div class="card-body">
+            <canvas class="price-chart w-100" height="320"
+                    th:attr="data-series=${history.series()}"></canvas>
+            <p class="text-secondary small mb-0 mt-2" th:if="${history.empty()}">
+                Die aktuelle Kursquelle liefert keine Historie.
+            </p>
+            <p class="mb-0 mt-2" th:unless="${history.empty()}">
+                Entwicklung &uuml;ber <span th:text="${history.range().toUpperCase()}">1M</span>:
+                <strong th:text="${#numbers.formatDecimal(history.performancePercent(), 1, 2)} + ' %'"
+                        th:classappend="${history.performancePercent().signum() < 0} ? 'text-danger' : 'text-success'">
+                    +4.20 %
+                </strong>
+            </p>
+        </div>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-3">ISIN</dt>
+        <dd class="col-sm-9" th:text="${instrument.isin()}">-</dd>
+        <dt class="col-sm-3">WKN</dt>
+        <dd class="col-sm-9" th:text="${instrument.wkn()}">-</dd>
+        <dt class="col-sm-3">W&auml;hrung</dt>
+        <dd class="col-sm-9" th:text="${instrument.currency()}">USD</dd>
+    </dl>
+</section>
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/price-chart.js}"></script>
+</th:block>
+</body>
+</html>

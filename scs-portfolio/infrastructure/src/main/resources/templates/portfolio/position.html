@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title th:text="${details.position().name()}">Position</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{'/portfolios/' + ${details.portfolioId()}}"
+                                           th:text="${details.portfolioName()}">Depot</a></li>
+            <li class="breadcrumb-item active" th:text="${details.position().symbol()}">AAPL</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1" th:text="${details.position().name()}">Apple Inc.</h1>
+            <code class="text-info" th:text="${details.position().symbol()}">AAPL</code>
+            <span class="text-secondary small" th:if="${details.position().isin()}"
+                  th:text="'ISIN ' + ${details.position().isin()}">ISIN</span>
+            <span class="text-secondary small" th:if="${details.position().wkn()}"
+                  th:text="'WKN ' + ${details.position().wkn()}">WKN</span>
+        </div>
+        <div class="text-end">
+            <market-quote th:attr="symbol=${details.position().symbol()}" show="full" class="fs-4"></market-quote>
+            <div class="small">
+                <a th:href="${marketDataUrl} + '/instruments/' + ${details.position().symbol()}"
+                   target="_blank" rel="noopener">Chart im Marktdaten-System &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-2 row-cols-lg-4 g-3 mb-4">
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Bestand</div>
+                    <div class="fs-5" th:text="${details.position().quantity()}">10</div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Kaufkurs &oslash;</div>
+                    <div class="fs-5"
+                         th:text="${#numbers.formatDecimal(details.position().averagePrice(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${details.position().currency()}">
+                        100,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Investiert</div>
+                    <div class="fs-5"
+                         th:text="${#numbers.formatDecimal(details.position().invested(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${details.position().currency()}">
+                        1.000,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-body-tertiary h-100">
+                <div class="card-body">
+                    <div class="text-secondary small text-uppercase">Nicht realisiert</div>
+                    <div class="fs-5"
+                         th:classappend="${details.position().up()} ? 'text-success' : 'text-danger'"
+                         th:text="${details.position().priced()}
+                             ? ${#numbers.formatDecimal(details.position().unrealizedGain(), 1, 'DEFAULT', 2, 'DEFAULT')} + ' ' + ${details.position().currency()}
+                             : 'kein Kurs'">
+                        +50,00 EUR
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card bg-body-tertiary">
+                <div class="card-header">Offene Tranchen</div>
+                <table class="table mb-0">
+                    <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th>Datum</th>
+                        <th class="text-end">Stück</th>
+                        <th class="text-end">Kurs</th>
+                        <th class="text-end">Gebühr</th>
+                        <th class="text-end">Kosten</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="tranche : ${details.tranches()}">
+                        <td th:text="${#temporals.format(tranche.tradeDate(), 'dd.MM.yyyy')}">01.01.2024</td>
+                        <td class="text-end" th:text="${tranche.quantity()}">10</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(tranche.pricePerShare(), 1, 'DEFAULT', 2, 'DEFAULT')}">100,00</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(tranche.fee(), 1, 'DEFAULT', 2, 'DEFAULT')}">1,00</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(tranche.cost(), 1, 'DEFAULT', 2, 'DEFAULT')}">1.001,00</td>
+                    </tr>
+                    <tr th:if="${details.tranches().isEmpty()}">
+                        <td colspan="5" class="text-secondary text-center py-3">Keine offenen Tranchen</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card bg-body-tertiary">
+                <div class="card-header">Realisierte Trades</div>
+                <table class="table mb-0">
+                    <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th>Verkauft</th>
+                        <th class="text-end">Stück</th>
+                        <th class="text-end">Kauf</th>
+                        <th class="text-end">Verkauf</th>
+                        <th class="text-end">G/V</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="trade : ${details.realizedTrades()}">
+                        <td th:text="${#temporals.format(trade.sellDate(), 'dd.MM.yyyy')}">01.06.2024</td>
+                        <td class="text-end" th:text="${trade.quantity()}">5</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(trade.buyPrice(), 1, 'DEFAULT', 2, 'DEFAULT')}">100,00</td>
+                        <td class="text-end"
+                            th:text="${#numbers.formatDecimal(trade.sellPrice(), 1, 'DEFAULT', 2, 'DEFAULT')}">120,00</td>
+                        <td class="text-end" th:classappend="${trade.up()} ? 'text-success' : 'text-danger'"
+                            th:text="${#numbers.formatDecimal(trade.gain(), 1, 'DEFAULT', 2, 'DEFAULT')}">+100,00</td>
+                    </tr>
+                    <tr th:if="${details.realizedTrades().isEmpty()}">
+                        <td colspan="5" class="text-secondary text-center py-3">Noch nichts verkauft</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+        <a class="btn btn-primary"
+           th:href="@{'/portfolios/' + ${details.portfolioId()} + '/buy'(symbol=${details.position().symbol()})}">
+            Nachkaufen
+        </a>
+        <a class="btn btn-outline-danger"
+           th:href="@{'/portfolios/' + ${details.portfolioId()} + '/positions/' + ${details.position().positionId()} + '/sell'}">
+            Verkaufen
+        </a>
+        <form method="post" class="ms-auto"
+              th:action="@{'/portfolios/' + ${details.portfolioId()} + '/positions/' + ${details.position().positionId()} + '/delete'}">
+            <button type="submit" class="btn btn-outline-secondary"
+                    onclick="return confirm('Position mitsamt Historie löschen?')">
+                Position löschen
+            </button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

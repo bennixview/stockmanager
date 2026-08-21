@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title>Nicht gefunden</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h1 class="h3">Nicht gefunden</h1>
+    <p class="text-secondary" th:text="${message}">Das gesuchte Objekt gibt es nicht.</p>
+    <a class="btn btn-primary" th:href="@{/}">Zurück zum Depot</a>
+</section>
+</body>
+</html>

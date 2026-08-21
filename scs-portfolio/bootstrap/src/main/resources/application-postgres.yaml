@@ -1,0 +1,7 @@
+# Run against PostgreSQL instead of the embedded H2 file database:
+#   java -jar portfolio.jar --spring.profiles.active=postgres
+spring:
+  datasource:
+    url: ${PORTFOLIO_DB_URL:jdbc:postgresql://localhost:5432/portfolio}
+    username: ${PORTFOLIO_DB_USER:portfolio}
+    password: ${PORTFOLIO_DB_PASSWORD:}

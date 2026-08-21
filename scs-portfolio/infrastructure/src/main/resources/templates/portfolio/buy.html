@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}" lang="de">
+<head>
+    <title>Kaufen</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{'/portfolios/' + ${portfolioId}}">Depot</a></li>
+            <li class="breadcrumb-item active">Kaufen</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card bg-body-tertiary">
+                <div class="card-header">Instrument suchen</div>
+                <div class="card-body">
+                    <input class="form-control mb-3" type="search" name="query" autocomplete="off"
+                           placeholder="Name, Symbol, ISIN oder WKN"
+                           hx-get="/instruments/search" hx-trigger="keyup changed delay:250ms, search"
+                           hx-target="#results" hx-swap="outerHTML">
+                    <p class="text-secondary small">
+                        Die Treffer kommen aus dem Marktdaten-System. Wird dort nichts gefunden, kann das Symbol
+                        auch direkt eingetragen werden.
+                    </p>
+                    <ul id="results" th:fragment="results" class="list-group list-group-flush">
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center"
+                            th:each="instrument : ${results}">
+                            <span>
+                                <span class="d-block" th:text="${instrument.name()}">Apple Inc.</span>
+                                <code class="text-info small" th:text="${instrument.symbol().value()}">AAPL</code>
+                                <span class="text-secondary small"
+                                      th:text="${instrument.currency().currencyCode}">USD</span>
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                    th:attr="data-symbol=${instrument.symbol().value()},
+                                             data-name=${instrument.name()},
+                                             data-currency=${instrument.currency().currencyCode}"
+                                    onclick="pickInstrument(this)">
+                                Wählen
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <form class="card bg-body-tertiary" method="post"
+                  th:action="@{'/portfolios/' + ${portfolioId} + '/buy'}" th:object="${buyForm}">
+                <div class="card-header">Kauf buchen</div>
+                <div class="card-body">
+                    <div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+                        <ul class="mb-0">
+                            <li th:each="error : ${#fields.allErrors()}" th:text="${error}">Fehler</li>
+                        </ul>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="symbol">Symbol</label>
+                            <input class="form-control" id="symbol" th:field="*{symbol}" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="name">Name</label>
+                            <input class="form-control" id="name" th:field="*{name}">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label" for="quantity">Stück</label>
+                            <input class="form-control" id="quantity" type="number" step="0.000001" min="0.000001"
+                                   th:field="*{quantity}" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label" for="pricePerShare">Kurs je Stück</label>
+                            <input class="form-control" id="pricePerShare" type="number" step="0.0001" min="0.0001"
+                                   th:field="*{pricePerShare}" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="form-label" for="currency">Währung</label>
+                            <input class="form-control" id="currency" maxlength="3" th:field="*{currency}"
+                                   placeholder="EUR">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="fee">Gebühren</label>
+                            <input class="form-control" id="fee" type="number" step="0.01" min="0" th:field="*{fee}">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="tradeDate">Handelstag</label>
+                            <input class="form-control" id="tradeDate" type="date" th:field="*{tradeDate}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a class="btn btn-outline-secondary" th:href="@{'/portfolios/' + ${portfolioId}}">Abbrechen</a>
+                    <button type="submit" class="btn btn-primary">Kauf buchen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="scripts">
+<script>
+    function pickInstrument(button) {
+        document.getElementById('symbol').value = button.dataset.symbol;
+        document.getElementById('name').value = button.dataset.name;
+        document.getElementById('currency').value = button.dataset.currency;
+        document.getElementById('quantity').focus();
+    }
+</script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,41 @@
+# Runs both self-contained systems side by side.
+#
+# They share nothing but a network: each has its own image, its own database and its own UI. Open
+# http://localhost:8080 for the portfolio and http://localhost:8081 for the market data system.
+services:
+
+  marketdata:
+    build:
+      context: .
+      dockerfile: scs-marketdata/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      # simulated | yahoo | alphavantage
+      MARKETDATA_PROVIDER: ${MARKETDATA_PROVIDER:-simulated}
+      ALPHA_VANTAGE_API_KEY: ${ALPHA_VANTAGE_API_KEY:-}
+      # the browser talks to this system directly, so its own origin has to allow the portfolio's
+      MARKETDATA_ALLOWEDORIGINS: http://localhost:8080
+    volumes:
+      - marketdata-data:/app/data
+
+  portfolio:
+    build:
+      context: .
+      dockerfile: scs-portfolio/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      marketdata:
+        condition: service_healthy
+    environment:
+      # server to server inside the compose network
+      MARKETDATA_URL: http://marketdata:8081
+      # what the user's browser can reach
+      MARKETDATA_BROWSER_URL: http://localhost:8081
+    volumes:
+      - portfolio-data:/app/data
+
+volumes:
+  marketdata-data:
+  portfolio-data:

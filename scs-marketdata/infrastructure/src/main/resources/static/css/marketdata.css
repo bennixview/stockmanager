@@ -1,0 +1,15 @@
+body {
+    min-height: 100vh;
+}
+
+.card {
+    border-color: rgba(148, 163, 184, .2);
+}
+
+code {
+    font-size: .9em;
+}
+
+canvas.price-chart {
+    display: block;
+}

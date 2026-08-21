@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: portfolio
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:${PORTFOLIO_DB_PATH:./data/portfolio};AUTO_SERVER=TRUE
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  thymeleaf:
+    cache: false
+  mvc:
+    problemdetails:
+      enabled: true
+  web:
+    # the UI is German, so amounts and dates are formatted German whatever the browser asks for
+    locale: de-DE
+    locale-resolver: fixed
+
+server:
+  servlet:
+    session:
+      # no jsessionid in URLs
+      tracking-modes: cookie
+  port: ${PORTFOLIO_PORT:8080}
+
+portfolio:
+  base-currency: EUR
+  exchange-rate-ttl: 5m
+  market-data:
+    # server to server; inside docker compose this becomes http://marketdata:8081
+    base-url: ${MARKETDATA_URL:http://localhost:8081}
+    # what the browser uses for the quote widget and the live event stream
+    browser-url: ${MARKETDATA_BROWSER_URL:http://localhost:8081}
+  legacy-import:
+    enabled: true
+    file: ${LEGACY_POSITIONS_FILE:positions.json}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.bewi.stockmanager: INFO
